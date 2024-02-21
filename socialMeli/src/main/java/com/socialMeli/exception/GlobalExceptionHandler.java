@@ -1,7 +1,6 @@
 package com.socialMeli.exception;
 
-import com.socialMeli.dto.response.ExceptionDto;
-import com.socialMeli.dto.response.MessageDTO;
+import com.socialMeli.dto.response.MessageDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,21 +10,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> NotFoundException(NotFoundException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionDto);
+        MessageDto messageDTO = new MessageDto(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(messageDTO);
     }
     @ExceptionHandler(UserIsNotVendorException.class)
     public ResponseEntity<?> userIsNotVendorException(UserIsNotVendorException e){
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionDto);
+        MessageDto messageDTO = new MessageDto(e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageDTO);
     }
     @ExceptionHandler(UserFollowException.class)
     public ResponseEntity<?> userFollowException(UserFollowException e){
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        MessageDto messageDTO = new MessageDto(e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageDTO);
     }
     @ExceptionHandler(InvalidDataException.class)
-    public ResponseEntity<MessageDTO> invalidDataException(InvalidDataException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDTO(e.getMessage()));
+    public ResponseEntity<?> invalidDataException(InvalidDataException e){
+        MessageDto messageDTO = new MessageDto(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDTO);
     }
 
 }

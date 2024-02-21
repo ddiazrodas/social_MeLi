@@ -1,5 +1,6 @@
 package com.socialMeli.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +11,14 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
-    Integer product_id;
-    String product_name;
+public class ProductDto {
+    @JsonProperty("product_id")
+    Integer id;
+    @JsonProperty("product_name")
+    String name;
     String type;
     String brand;
     String color;
-    String notes;
+    @JsonProperty("notes")
+    String note;
 }

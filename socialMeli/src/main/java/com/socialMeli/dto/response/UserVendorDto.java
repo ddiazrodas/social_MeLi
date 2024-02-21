@@ -12,12 +12,12 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserVendorDTO {
+public class UserVendorDto {
     @JsonProperty("user_id")
     Integer userId;
     @JsonProperty("user_name")
     String userName;
-    public UserVendorDTO(User user){
+    public UserVendorDto(User user){
         this.userId = user.getId();
         this.userName = user.getName();
     }

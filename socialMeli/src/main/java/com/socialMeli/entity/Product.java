@@ -12,13 +12,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-    @JsonProperty("product_id")
     Integer id;
-    @JsonProperty("product_name")
     String name;
     String type;
     String color;
     String brand;
-    @JsonProperty("notes")
     String note;
 }

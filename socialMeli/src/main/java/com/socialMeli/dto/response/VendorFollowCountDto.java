@@ -22,7 +22,5 @@ public class VendorFollowCountDto {
         this.userId = user.getId();
         this.userName = user.getName();
         this.followerCount = user.getFollowersId().size();
-
     }
-
 }
