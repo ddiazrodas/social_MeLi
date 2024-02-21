@@ -12,4 +12,5 @@ public interface IPostRepository {
     Optional<List<Post>> getPostFromTheLastTwoWeeksByUserId(Integer userId);
     Integer add(Post post);
     Optional<List<Post>> getPromPostByUserId(Integer userId);
+
 }

@@ -66,7 +66,11 @@ public class PostService implements IPostService {
 
     private List<PostDto> addRecoverProductsDtoOnPosts(List<Post> postList) {
         List<PostDto> postDtoList = new ArrayList<>();
+        List<PostDescDTO> promoPostsDtoList;
         for (Post post : postList) {
+            if(post instanceof PostDesc){
+
+            }
             PostDto postDto = convertPostToDto(post);
             postDto.setProduct(
                     convertProductToDto(
@@ -78,13 +82,6 @@ public class PostService implements IPostService {
         return postDtoList;
     }
 
-//    @Override
-//    public void addPromoPost(PostDescDTO postDescDto) {
-//        validatePost(postDescDto);
-//        PostDesc finalPostDesc = new PostDesc(idCounter.incrementAndGet(), postDescDto);
-//        productRepository.add(convertProductDtoToEntity(postDescDto.getProduct()));
-//        postRepository.add(finalPostDesc);
-//    }
     private void validatePost(PostDTO post) {
         if (post.getUserId() <= 0) {
             throw new InvalidDataException("Error al enviar los datos: Usuario no válido");
@@ -152,10 +149,29 @@ public class PostService implements IPostService {
         List<PostDto> posts = addRecoverProductsDtoOnPosts(postRepository.getPromPostByUserId(userId)
                 .orElseThrow( () -> new NotFoundException("No tiene publicaciones en promocion")));
 
-//      Optional<List<Post>> response = postRepository.getPromPostByUserId(userId);
-        QuantityOfPromoPostsByUserIdDto response2 = new QuantityOfPromoPostsByUserIdDto(userId, user.getName(), posts.size());
+        return new QuantityOfPromoPostsByUserIdDto(userId, user.getName(), posts.size());
+    }
 
-        return response2;
+    @Override
+    public UserVendorDescPostsDto getAllPromotionPostsByVender(Integer userId) {
+        User user = userRepository.findUserByUserId(userId).orElseThrow( () -> new NotFoundException("No se encontró al usuario"));
+        List<Post> postsList = postRepository.getPromPostByUserId(user.getId())
+                .orElseThrow( () -> new NotFoundException("No se encontraron posts con descuentos"));
+
+        List<PostDesc> postsListConvertEntity = new ArrayList<>();
+        for(Post elem : postsList) {
+            postsListConvertEntity.add((PostDesc) elem);
+        }
+
+        List<PostDescDto> postsListConvertToDto = new ArrayList<>();
+        for(PostDesc elem : postsListConvertEntity) {
+            postsListConvertToDto.add(new PostDescDto(
+                    elem.getId(), elem,convertProductToDto(productRepository.getProductById(elem.getProductId())
+                    .orElseThrow( () -> new NotFoundException("No se encontro el producto"))),
+                    elem.getHasPromo(), elem.getDiscount()
+            ));
+        }
+        return new UserVendorDescPostsDto(user.getId(), user.getName(), postsListConvertToDto);
     }
 
     private ProductDto convertProductToDto(Product product) {

@@ -42,4 +42,9 @@ public class PostController {
     public ResponseEntity<QuantityOfPromoPostsByUserIdDto> getPromoPostsByVendor(@RequestParam Integer userId) {
         return ResponseEntity.ok().body(postService.getPromotionPostsById(userId));
     }
+    //US 0012: trae el listado de todos los productos en promoción de un determinado vendedor
+    @GetMapping("/products/promo-post/list")
+    public ResponseEntity<?> getAllPromoPostsByVendor(@RequestParam Integer userId){
+        return ResponseEntity.ok().body(postService.getAllPromotionPostsByVender(userId));
+    }
 }
