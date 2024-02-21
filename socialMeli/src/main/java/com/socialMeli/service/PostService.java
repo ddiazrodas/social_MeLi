@@ -2,9 +2,7 @@ package com.socialMeli.service;
 
 import com.socialMeli.dto.request.PostDTO;
 import com.socialMeli.dto.request.PostDescDTO;
-import com.socialMeli.dto.response.PostDto;
-import com.socialMeli.dto.response.ProductDto;
-import com.socialMeli.dto.response.PublicationDto;
+import com.socialMeli.dto.response.*;
 import com.socialMeli.entity.Post;
 import com.socialMeli.entity.PostDesc;
 import com.socialMeli.entity.Product;
@@ -134,15 +132,30 @@ public class PostService implements IPostService {
 
     private PostDto convertPostToDto(Post post) {
         PostDto finalPost;
+        ProductDto postProductDto = convertProductToDto(productRepository.getProductById(post.getProductId())
+                .orElseThrow(() -> new NotFoundException("No se encontró el producto")));
 
         if(post instanceof PostDesc) {
-            finalPost = new PostDescDto(idCounter.incrementAndGet(), post);
+            finalPost = new PostDescDto(idCounter.incrementAndGet(), post, postProductDto,
+                    ((PostDesc) post).getHasPromo(), ((PostDesc) post).getDiscount());
         }
         else {
-            finalPost = new PostDto(idCounter.incrementAndGet(), post);
+            finalPost = new PostDto(idCounter.incrementAndGet(), post, postProductDto);
         }
-
+        System.out.println(finalPost);
         return finalPost;
+    }
+
+    @Override
+    public QuantityOfPromoPostsByUserIdDto getPromotionPostsById(Integer userId) {
+        User user = userRepository.findUserByUserId(userId).orElseThrow( () -> new NotFoundException("No se encontró al usuario"));
+        List<PostDto> posts = addRecoverProductsDtoOnPosts(postRepository.getPromPostByUserId(userId)
+                .orElseThrow( () -> new NotFoundException("No tiene publicaciones en promocion")));
+
+//      Optional<List<Post>> response = postRepository.getPromPostByUserId(userId);
+        QuantityOfPromoPostsByUserIdDto response2 = new QuantityOfPromoPostsByUserIdDto(userId, user.getName(), posts.size());
+
+        return response2;
     }
 
     private ProductDto convertProductToDto(Product product) {

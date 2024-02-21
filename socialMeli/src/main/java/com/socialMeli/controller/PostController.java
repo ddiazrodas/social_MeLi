@@ -5,6 +5,7 @@ import com.socialMeli.dto.request.PostDescDTO;
 import com.socialMeli.dto.response.MessageDto;
 import com.socialMeli.dto.response.PostDto;
 import com.socialMeli.dto.response.PublicationDto;
+import com.socialMeli.dto.response.QuantityOfPromoPostsByUserIdDto;
 import com.socialMeli.service.IPostService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,10 +38,8 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     //US 0011: trae el listado de los productos en promo de un determinado vendedor
-//    @GetMapping("/products/promo-post/list?user_id={userId}")
-//    public ResponseEntity<?> getPromoPostsByVendor(@RequestParam("user_id") String userId) {
-//        return ResponseEntity.ok().body(postService.getPromotionPostsById(userId));
-//    }
-
-
+    @GetMapping("/products/promo-post/count")
+    public ResponseEntity<QuantityOfPromoPostsByUserIdDto> getPromoPostsByVendor(@RequestParam Integer userId) {
+        return ResponseEntity.ok().body(postService.getPromotionPostsById(userId));
+    }
 }

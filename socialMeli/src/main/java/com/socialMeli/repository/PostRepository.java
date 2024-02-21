@@ -1,16 +1,15 @@
 package com.socialMeli.repository;
 
 import com.socialMeli.entity.Post;
+import com.socialMeli.entity.PostDesc;
 import com.socialMeli.entity.Product;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public class PostRepository implements IPostRepository {
@@ -36,6 +35,13 @@ public class PostRepository implements IPostRepository {
                 post -> post.getUserId().equals(userId) &&
                         post.getDate().isAfter(LocalDate.now().minus(twoWeeksPeriod))
         ).toList();
+        return filteredPost.isEmpty() ? Optional.empty() : Optional.of(filteredPost);
+    }
+
+    @Override
+    public Optional<List<Post>> getPromPostByUserId(Integer userId) {
+        List<Post> filteredPost = postBd.stream().filter(
+                post -> post.getUserId().equals(userId) && post instanceof PostDesc).toList();
         return filteredPost.isEmpty() ? Optional.empty() : Optional.of(filteredPost);
     }
 }
