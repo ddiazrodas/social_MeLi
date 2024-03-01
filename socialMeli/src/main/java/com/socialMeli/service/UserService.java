@@ -65,12 +65,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserUnfollowedDto unfollowUser(Integer userId, Integer userIdToUnfollow) {
+    public MessageDto unfollowUser(Integer userId, Integer userIdToUnfollow) {
         User user = getUserByIdOrThrow(userId);
         User userToUnfollow = getUserByIdOrThrow(userIdToUnfollow);
         if (user.getFollowedId().contains(userIdToUnfollow)) {
             userRepository.unfollowUser(user, userToUnfollow);
-            return new UserUnfollowedDto(userId, userIdToUnfollow);
+            return new MessageDto("Dejaste de seguir a "+userToUnfollow.getName());
         }
         throw new UserFollowException("El usuario no esta en tu lista de followed");
     }

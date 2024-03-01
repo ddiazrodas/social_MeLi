@@ -71,27 +71,12 @@ public class PostService implements IPostService {
     }
 
     private void validatePost(PostDTO post) {
-        if (post.getUserId() <= 0) {
-            throw new InvalidDataException("Error al enviar los datos: Usuario no válido");
-        }
         User user = userRepository.findUserByUserId(post.getUserId()).orElseThrow(() -> new NotFoundException("No se encontro al usuario"));
         if (!VENDOR.equals(user.getType())) {
             throw new InvalidDataException("El usuario " + user.getName() + " no es un vendedor");
         }
         if (post.getDate() == null) {
             post.setDate(LocalDate.now());
-        }
-        if (post.getProduct() == null
-                || post.getProduct().getName() == null
-                || post.getProduct().getId() <= 0
-                || post.getProduct().getName().isEmpty()) {
-            throw new InvalidDataException("Error al enviar los datos: Producto no válido");
-        }
-        if (post.getCategory() <= 0) {
-            throw new InvalidDataException("Error al enviar los datos: Categoría no válida");
-        }
-        if (post.getPrice() <= 0) {
-            throw new InvalidDataException("Error al enviar los datos: Precio no válido");
         }
     }
 

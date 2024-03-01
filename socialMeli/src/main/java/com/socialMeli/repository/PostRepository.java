@@ -14,11 +14,10 @@ import java.util.stream.Collectors;
 
 @Repository
 public class PostRepository implements IPostRepository {
-    List<Product> productBd;
+
     List<Post> postBd;
 
     public PostRepository() {
-        this.productBd = new ArrayList<>();
         this.postBd = new ArrayList<>();
     }
 

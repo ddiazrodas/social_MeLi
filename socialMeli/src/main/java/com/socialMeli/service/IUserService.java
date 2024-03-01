@@ -8,5 +8,5 @@ public interface IUserService {
 
     FollowedListDto getFollowedList(Integer userId, String order);
 
-    UserUnfollowedDto unfollowUser(Integer userId, Integer userIdToUnfollow);
+    MessageDto unfollowUser(Integer userId, Integer userIdToUnfollow);
 }
